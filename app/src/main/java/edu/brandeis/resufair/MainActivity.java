@@ -70,9 +70,9 @@ public class MainActivity extends AppCompatActivity {
             server.logIn(userEmail, userPassword, userType);
             if (userType.equals(getString(R.string.user_type_1))) {
                 // will be replaced by requesting server
-                HashMap<String, String> map = generateTestUserInfo();
-                Intent intent = new Intent(this, StatusActivity.class);
-                intent.putExtra(USER_INFO, map);
+//                HashMap<String, String> map = generateTestUserInfo();
+                Intent intent = new Intent(this, infoOptionsActivity.class);
+//                intent.putExtra(USER_INFO, map);
                 startActivity(intent);
             } else {
                 server.getCompany(new Response.Listener<JSONObject>() {

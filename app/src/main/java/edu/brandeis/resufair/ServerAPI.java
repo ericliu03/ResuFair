@@ -21,6 +21,7 @@ public class ServerAPI {
     String userEmail;
     String userPassword;
     String userType;
+    String candidateEmail;
     RequestSingleton requestSingleton;
 
     private ServerAPI(Context context) {
@@ -45,8 +46,15 @@ public class ServerAPI {
         requestSingleton.newRequest(url, listener, errorListener);
     }
 
-    public Candidate getCandidate(Context context) {
-        return null;
+    public void getCandidate(Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url;
+        if(userType.equals("JobSeeker")) {
+            url = "http://resumefinder.herokuapp.com/api/appl_login/appl_email=" + userEmail + "&password=" + userPassword;
+        } else {
+            url = "http://resumefinder.herokuapp.com/api/comp_request_appl/appl_email="+candidateEmail+"&comp_email="+userEmail;
+        }
+
+        requestSingleton.newRequest(url, listener, errorListener);
     }
 
 
