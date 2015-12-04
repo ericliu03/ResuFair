@@ -160,8 +160,8 @@ public class CompanyStatusActivity extends AppCompatActivity {
         AlertDialog.Builder alert = new AlertDialog.Builder(
                 CompanyStatusActivity.this);
 
-        alert.setTitle("Delete");
-        alert.setMessage("Do you want delete this item?");
+        alert.setTitle("Drop Candidate");
+        alert.setMessage("Do you want remove this candidate?");
         alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
