@@ -1,38 +1,111 @@
 package edu.brandeis.resufair;
 
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import android.content.Context;
+import android.util.Log;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 /*This file is pretending an API getting data from server*/
 
 
-public class ServerAPI implements Serializable{
-    ArrayList<Candidate> result;
-    boolean logIn(String username, String password, String userType) {
-        try {
-            Thread.sleep(1000);                 //1000 milliseconds is one second.
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
+public class ServerAPI {
+
+    static ServerAPI server;
+    String userEmail;
+    String userPassword;
+    String userType;
+    RequestSingleton requestSingleton;
+
+    private ServerAPI(Context context) {
+        requestSingleton = new RequestSingleton(context);
+    }
+
+    static synchronized ServerAPI getInstance(Context context) {
+        if (server == null) {
+            server = new ServerAPI(context);
         }
-        return true;
+        return server;
     }
 
-    Company getCompanyInfo() {
-        Company company = new Company("test company1", "781-187-8781 hope ave", "This is a test introduction");
-        return company;
+    public void logIn(String username, String password, String userType) {
+        this.userEmail = username;
+        this.userPassword = password;
+        this.userType = userType;
     }
 
-    ArrayList<Candidate> getCandidates() {
-        result = new ArrayList<>();
-        for(int i = 0; i < 9; i ++) {
-            result.add(new Candidate("John Shit"+String.valueOf(i), "09/10/190"+String.valueOf(i), "Brendais"+String.valueOf(i)));
+    public void getCompany(Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = "http://resumefinder.herokuapp.com/api/comp_login/comp_email=" + userEmail + "&password=" + userPassword;
+        requestSingleton.newRequest(url, listener, errorListener);
+    }
+
+    public Candidate getCandidate(Context context) {
+        return null;
+    }
+
+
+    public void addNewCandidate(String candidateEmail, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = "http://resumefinder.herokuapp.com/api/request/appl_email=" + candidateEmail + "&comp_email=" + userEmail;
+        requestSingleton.newRequest(url, listener, errorListener);
+    }
+
+    public void deleteCandidate(String candidateEmail, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = "http://resumefinder.herokuapp.com/api/request/appl_email=" + candidateEmail + "&comp_email=" + userEmail;
+        requestSingleton.newRequest(url, listener, errorListener);
+    }
+
+    public void registerCandidate(String email, String password, String lastnName, String firstName, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = "http://resumefinder.herokuapp.com/api/submit_regist_app/email="+email+"&password="+password+"&first_name="+firstName+"&last_name="+lastnName;
+        requestSingleton.newRequest(url, listener, errorListener);
+    }
+    public void registerCompany(String email, String password, String companyName, String info, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = "http://resumefinder.herokuapp.com/api/submit_regist_comp/email="+email+"&password="+password+"&name="+companyName+"&info="+info;
+        requestSingleton.newRequest(url, listener, errorListener);
+    }
+}
+
+
+class RequestSingleton {
+    private static RequestSingleton mInstance;
+    private static Context mCtx;
+    private RequestQueue mRequestQueue;
+
+    public RequestSingleton(Context context) {
+        mCtx = context;
+        mRequestQueue = getRequestQueue();
+
+    }
+
+    public static synchronized RequestSingleton getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new RequestSingleton(context);
         }
-        return result;
+        return mInstance;
     }
 
-    boolean addNewCandidate(String email) {
-        result.add(new Candidate("new"+email, "8/4/2123", "BDDF college"));
-        return true;
+    public RequestQueue getRequestQueue() {
+        if (mRequestQueue == null) {
+            // getApplicationContext() is key, it keeps you from leaking the
+            // Activity or BroadcastReceiver if someone passes one in.
+            mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
+        }
+        return mRequestQueue;
+    }
+
+    public <T> void addToRequestQueue(Request<T> req) {
+        getRequestQueue().add(req);
+    }
+
+    public void newRequest(String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        Log.e("URLE", url);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, listener, errorListener);
+        this.addToRequestQueue(jsObjRequest);
     }
 }

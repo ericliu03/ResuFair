@@ -1,13 +1,11 @@
 package edu.brandeis.resufair;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,25 +18,40 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CompanyStatusActivity extends AppCompatActivity {
 
     private ServerAPI server;
-    private CandidateArrayAdapter adapter;
+    private Company company;
+    private ListView listview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_status);
-        server = (ServerAPI) getIntent().getSerializableExtra(MainActivity.SERVER);
+        server = ServerAPI.getInstance(this);
+
+
+        this.listview = (ListView) findViewById(R.id.company_status_list_view);
         refreshCompanyInfo();
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-        ListView listview = (ListView) findViewById(R.id.company_status_list_view);
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                           int position, long id) {
+                removeItemFromList(position);
+                return true;
+            }
 
-        this.adapter = new CandidateArrayAdapter(this, R.layout.candidate_listview_entry, server.getCandidates());
-        listview.setAdapter(adapter);
+        });
     }
 
     @Override
@@ -64,13 +77,29 @@ public class CompanyStatusActivity extends AppCompatActivity {
     }
 
     private void refreshCompanyInfo() {
-        TextView nameView = (TextView) findViewById(R.id.company_name_status);
-        TextView contactView = (TextView) findViewById(R.id.company_address_status);
-        TextView introView = (TextView) findViewById(R.id.company_intro_status);
-        Company company = server.getCompanyInfo();
-        nameView.setText(company.name);
-        contactView.setText(company.contact);
-        introView.setText(company.intro);
+        server.getCompany(new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                company = new Company(response);
+
+                CandidateArrayAdapter temp = new CandidateArrayAdapter(CompanyStatusActivity.this, R.layout.candidate_listview_entry, company.getCandidates());
+                listview.setAdapter(temp);
+                TextView nameView = (TextView) findViewById(R.id.company_name_status);
+                TextView contactView = (TextView) findViewById(R.id.company_address_status);
+                TextView introView = (TextView) findViewById(R.id.company_intro_status);
+                nameView.setText(company.name);
+                contactView.setText(company.contact);
+                introView.setText(company.intro);
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(CompanyStatusActivity.this, "Something wrong, try again", Toast.LENGTH_LONG).show();
+
+            }
+        });
+
     }
     private void AddNewCandidate() {
 
@@ -86,7 +115,23 @@ public class CompanyStatusActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String candidateEmail = input.getText().toString();
-                server.addNewCandidate(candidateEmail);
+                server.addNewCandidate(candidateEmail, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Toast.makeText(CompanyStatusActivity.this, response.getString("status"), Toast.LENGTH_SHORT).show();
+                            CompanyStatusActivity.this.refreshCompanyInfo();
+                        } catch (JSONException e) {
+                            Toast.makeText(CompanyStatusActivity.this, "Transmission Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(CompanyStatusActivity.this, "Response Error", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -97,6 +142,47 @@ public class CompanyStatusActivity extends AppCompatActivity {
         });
 
         builder.show();
+
+    }
+    protected void removeItemFromList(final int position) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(
+                CompanyStatusActivity.this);
+
+        alert.setTitle("Delete");
+        alert.setMessage("Do you want delete this item?");
+        alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // main code on after clicking yes
+                Candidate candidate = (Candidate) listview.getAdapter().getItem(position);
+                server.deleteCandidate(candidate.birthday, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Toast.makeText(CompanyStatusActivity.this, response.getString("status"), Toast.LENGTH_SHORT).show();
+                            CompanyStatusActivity.this.refreshCompanyInfo();
+                        } catch (JSONException e) {
+                            Toast.makeText(CompanyStatusActivity.this, "Transmission Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(CompanyStatusActivity.this, "Response Error", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
+        alert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alert.show();
+
     }
 
     private class CandidateArrayAdapter extends ArrayAdapter<Candidate> {
