@@ -17,7 +17,8 @@
         style="@style/MainTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="30dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:text="company_intro"
         />
     <TextView

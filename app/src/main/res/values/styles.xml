@@ -8,7 +8,12 @@
         <item name="android:colorLongPressedHighlight">#212121</item>
     </style>
 
+    <style name="ButtonStyle">
+        <item name="android:background">@drawable/custom_button</item>
+        <item name="android:textColor">#FFFFFF</item>
 
+        <item name="android:layout_margin">10dp</item>
+    </style>
     <style name="SmallHeaderStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">48dp</item>

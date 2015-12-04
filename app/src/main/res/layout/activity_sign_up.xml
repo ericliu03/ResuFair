@@ -100,7 +100,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="authenticate"
-            android:text="@string/regis_button" />
+            android:text="@string/regis_button"
+            style="@style/ButtonStyle"/>
 
     </LinearLayout>
 

@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:paddingLeft="70dp"
+    android:paddingRight="70dp"
+    android:layout_height="match_parent"
+    android:gravity="center">
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_basic"
         android:text="Show Basic"
-        android:onClick="ShowBasic"/>
+        android:onClick="ShowBasic"
+        style="@style/ButtonStyle"
+        android:padding="30dp"
+        android:textSize="15dp"/>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_edu"
         android:text="Show Education"
-        android:onClick="ShowEducation"/>
+        android:onClick="ShowEducation"
+        android:padding="30dp"
+        style="@style/ButtonStyle"
+        android:textSize="15dp"/>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_exp"
         android:text="Show Experience"
-        android:onClick="ShowExperience"/>
+        android:onClick="ShowExperience"
+        android:padding="30dp"
+        style="@style/ButtonStyle"
+        android:textSize="15dp"/>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_project"
+        android:padding="30dp"
         android:text="Show Project"
-        android:onClick="ShowProject"/>
+        android:onClick="ShowProject"
+        style="@style/ButtonStyle"
+        android:textSize="15dp"/>
 
 </LinearLayout>
