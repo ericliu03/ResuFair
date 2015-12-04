@@ -5,11 +5,11 @@ package edu.brandeis.resufair;
  */
 public class Candidate {
     String name;
-    String birthday;
+    String email;
     String school;
-    public Candidate(String name, String birthday, String school) {
+    public Candidate(String name, String email, String school) {
         this.name = name;
-        this.birthday = birthday;
+        this.email = email;
         this.school = school;
     }
 }

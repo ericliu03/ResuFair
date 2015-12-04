@@ -6,6 +6,8 @@
     android:background="#FFFFFF">
 
     <ListView android:id="@+id/basic_info"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="horizontal"

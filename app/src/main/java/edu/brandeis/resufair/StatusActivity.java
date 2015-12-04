@@ -37,7 +37,7 @@ public class StatusActivity extends AppCompatActivity {
         TextView gpa = (TextView) findViewById(R.id.status_gpa);
 
         name.setText(hashMap.get("name"));
-        birthday.setText(hashMap.get("birthday"));
+        birthday.setText(hashMap.get("email"));
         college.setText(hashMap.get("school"));
         major.setText(hashMap.get("major"));
         gpa.setText(hashMap.get("gpa"));

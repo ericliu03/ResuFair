@@ -150,7 +150,7 @@ public class CompanyStatusActivity extends AppCompatActivity {
 
     protected void startCandidateInfo(final int position) {
         Candidate candidate = (Candidate) listview.getAdapter().getItem(position);
-        server.candidateEmail = candidate.birthday;
+        server.candidateEmail = candidate.email;
         Intent intent = new Intent(CompanyStatusActivity.this, infoOptionsActivity.class);
         startActivity(intent);
     }
@@ -167,7 +167,7 @@ public class CompanyStatusActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // main code on after clicking yes
                 Candidate candidate = (Candidate) listview.getAdapter().getItem(position);
-                server.deleteCandidate(candidate.birthday, new Response.Listener<JSONObject>() {
+                server.deleteCandidate(candidate.email, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -219,7 +219,7 @@ public class CompanyStatusActivity extends AppCompatActivity {
 
                 holder = new CandidateHolder();
                 holder.name = (TextView) row.findViewById(R.id.entry_name_view);
-                holder.birthday = (TextView) row.findViewById(R.id.entry_email_view);
+                holder.email = (TextView) row.findViewById(R.id.entry_email_view);
                 holder.school = (TextView) row.findViewById(R.id.entry_school_view);
 
                 row.setTag(holder);
@@ -228,16 +228,19 @@ public class CompanyStatusActivity extends AppCompatActivity {
             }
 
             Candidate candidate = this.getItem(index);
-            holder.name.setText(candidate.name);
-            holder.birthday.setText(candidate.birthday);
-            holder.school.setText(candidate.school);
+            String temp = "Name: "+candidate.name;
+            holder.name.setText(temp);
+            temp = "Email: "+candidate.email;
+            holder.email.setText(temp);
+            temp = "School: "+candidate.school;
+            holder.school.setText(temp);
 
             return row;
         }
 
         class CandidateHolder {
             TextView name;
-            TextView birthday;
+            TextView email;
             TextView school;
         }
 

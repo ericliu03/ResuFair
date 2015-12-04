@@ -127,7 +127,6 @@ class RequestSingleton {
     }
 
     public void newRequest(String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        Log.e("URLE", url);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, listener, errorListener);
         this.addToRequestQueue(jsObjRequest);
