@@ -46,16 +46,6 @@ public class ServerAPI {
         requestSingleton.newRequest(url, listener, errorListener);
     }
 
-    public void getCandidate(Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        String url;
-        if(userType.equals("JobSeeker")) {
-            url = "http://resumefinder.herokuapp.com/api/appl_login/appl_email=" + userEmail + "&password=" + userPassword;
-        } else {
-            url = "http://resumefinder.herokuapp.com/api/comp_request_appl/appl_email="+candidateEmail+"&comp_email="+userEmail;
-        }
-
-        requestSingleton.newRequest(url, listener, errorListener);
-    }
 
 
     public void addNewCandidate(String candidateEmail, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
@@ -75,6 +65,32 @@ public class ServerAPI {
     public void registerCompany(String email, String password, String companyName, String info, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         String url = "http://resumefinder.herokuapp.com/api/submit_regist_comp/email="+email+"&password="+password+"&name="+companyName+"&info="+info;
         requestSingleton.newRequest(url, listener, errorListener);
+    }
+
+    public void getCandidate(Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url;
+        if (userType.equals("JobSeeker")) {
+            url = "http://resumefinder.herokuapp.com/api/appl_login/appl_email=" + userEmail + "&password=" + userPassword;
+        } else {
+            url = "http://resumefinder.herokuapp.com/api/comp_request_appl/appl_email=" + candidateEmail + "&comp_email=" + userEmail;
+        }
+
+        requestSingleton.newRequest(url, listener, errorListener);
+    }
+
+    public void updateProject(JSONObject post, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = "http://resumefinder.herokuapp.com/api/edit_project/";
+        requestSingleton.newRequest(url, post, listener, errorListener);
+    }
+
+    public void updateExperience(JSONObject post, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = "http://resumefinder.herokuapp.com/api/edit_experience/";
+        requestSingleton.newRequest(url, post, listener, errorListener);
+    }
+
+    public void updateEducation(JSONObject post, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        String url = "http://resumefinder.herokuapp.com/api/edit_education/";
+        requestSingleton.newRequest(url, post, listener, errorListener);
     }
 }
 
@@ -114,6 +130,13 @@ class RequestSingleton {
         Log.e("URLE", url);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, listener, errorListener);
+        this.addToRequestQueue(jsObjRequest);
+    }
+
+    public void newRequest(String url, JSONObject post, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        Log.e("URLE", url);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, post, listener, errorListener);
         this.addToRequestQueue(jsObjRequest);
     }
 }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class Company {
     public String name;
     public String intro;
-    public String contact;
     public JSONArray candidates;
 
     //{"id":2,"email":"companytest@gmail.com","password":"123","name":"TestCompany","info":"profile test","list":[]}
@@ -19,7 +18,6 @@ public class Company {
             this.name = jsonObject.getString("name");
             this.intro = jsonObject.getString("info");
             this.candidates = jsonObject.getJSONArray("list");
-            this.contact = "test";
         } catch (JSONException e) {
 
         }

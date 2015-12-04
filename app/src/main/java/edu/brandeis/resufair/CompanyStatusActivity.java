@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -42,6 +43,13 @@ public class CompanyStatusActivity extends AppCompatActivity {
 
         this.listview = (ListView) findViewById(R.id.company_status_list_view);
         refreshCompanyInfo();
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
+                startCandidateInfo(position);
+            }
+
+        });
         listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
@@ -68,9 +76,6 @@ public class CompanyStatusActivity extends AppCompatActivity {
             case R.id.new_company_candidate:
                 AddNewCandidate();
                 return true;
-            case R.id.edit_company_profile:
-//                Intent intent = new Intent(this, EditPassword.class);
-//                startActivity(intent);
             default:
                 return false;
         }
@@ -85,10 +90,8 @@ public class CompanyStatusActivity extends AppCompatActivity {
                 CandidateArrayAdapter temp = new CandidateArrayAdapter(CompanyStatusActivity.this, R.layout.candidate_listview_entry, company.getCandidates());
                 listview.setAdapter(temp);
                 TextView nameView = (TextView) findViewById(R.id.company_name_status);
-                TextView contactView = (TextView) findViewById(R.id.company_address_status);
                 TextView introView = (TextView) findViewById(R.id.company_intro_status);
                 nameView.setText(company.name);
-                contactView.setText(company.contact);
                 introView.setText(company.intro);
             }
         }, new Response.ErrorListener() {
@@ -144,6 +147,15 @@ public class CompanyStatusActivity extends AppCompatActivity {
         builder.show();
 
     }
+
+    protected void startCandidateInfo(final int position) {
+        Candidate candidate = (Candidate) listview.getAdapter().getItem(position);
+        server.candidateEmail = candidate.birthday;
+        Intent intent = new Intent(CompanyStatusActivity.this, infoOptionsActivity.class);
+        startActivity(intent);
+    }
+
+
     protected void removeItemFromList(final int position) {
         AlertDialog.Builder alert = new AlertDialog.Builder(
                 CompanyStatusActivity.this);
@@ -207,7 +219,7 @@ public class CompanyStatusActivity extends AppCompatActivity {
 
                 holder = new CandidateHolder();
                 holder.name = (TextView) row.findViewById(R.id.entry_name_view);
-                holder.birthday = (TextView) row.findViewById(R.id.entry_birthday_view);
+                holder.birthday = (TextView) row.findViewById(R.id.entry_email_view);
                 holder.school = (TextView) row.findViewById(R.id.entry_school_view);
 
                 row.setTag(holder);

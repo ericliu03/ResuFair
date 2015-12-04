@@ -21,7 +21,6 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     public final static String USER_INFO = "edu.brandeis.resufair.userinfo";
-    public final static String SERVER = "SERVER";
     private String userType;
     private ServerAPI server;
     @Override
@@ -70,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
             server.logIn(userEmail, userPassword, userType);
             if (userType.equals(getString(R.string.user_type_1))) {
                 // will be replaced by requesting server
-//                HashMap<String, String> map = generateTestUserInfo();
-                Intent intent = new Intent(this, infoOptionsActivity.class);
-//                intent.putExtra(USER_INFO, map);
+                HashMap<String, String> map = generateTestUserInfo();
+                Intent intent = new Intent(this, StatusActivity.class);
+                intent.putExtra(USER_INFO, map);
                 startActivity(intent);
             } else {
                 server.getCompany(new Response.Listener<JSONObject>() {
@@ -104,17 +103,6 @@ public class MainActivity extends AppCompatActivity {
         RadioButton button = (RadioButton) view;
         userType = button.getText().toString();
     }
-
-    private HashMap<String, String> generateTestUserInfo() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("name", "Xiaoming Wang");
-        map.put("birthday", "9/9/1999");
-        map.put("school", "Brandeis University");
-        map.put("major", "Computer Science");
-        map.put("gpa", "3.998");
-        return map;
-    }
-
     private void storeUserInfo(String username) {
 
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
