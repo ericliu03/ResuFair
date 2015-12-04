@@ -35,6 +35,30 @@
 
         <activity android:name=".CompanyStatusActivity" >
         </activity>
+        <activity
+            android:name=".infoOptionsActivity"
+            android:label="infoOptionsActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".BasicInfoActivity"
+            android:label="BasicInfoActivity">
+
+        </activity>
+        <activity android:name=".EduInfoActivity"
+            android:label="EduInfoActivity">
+
+        </activity>
+        <activity android:name=".ExpInfoActivity"
+            android:label="ExpInfoActivity">
+
+        </activity>
+        <activity android:name=".ProjectInfoActivity"
+            android:label="ProjectInfoActivity">
+
+        </activity>
+        <activity android:name=".BasicInfoUpdateActivity"
+            android:label="BasicInfoActivity">
+        </activity>
     </application>
 
 </manifest>
