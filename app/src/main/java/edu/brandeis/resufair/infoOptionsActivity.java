@@ -27,7 +27,6 @@ public class infoOptionsActivity extends AppCompatActivity {
 //        setResult(Activity.RESULT_OK, data);
         Intent intent = new Intent(this, BasicInfoActivity.class);
         startActivity(intent);
-        finish();
     }
     public void ShowEducation(View view){
 //        EditText expense = (EditText) findViewById(R.id.new_expense);
@@ -38,7 +37,6 @@ public class infoOptionsActivity extends AppCompatActivity {
 //        setResult(Activity.RESULT_OK, data);
         Intent intent = new Intent(this, EduInfoActivity.class);
         startActivity(intent);
-        finish();
     }
     public void ShowExperience(View view){
 //        EditText expense = (EditText) findViewById(R.id.new_expense);
@@ -49,7 +47,6 @@ public class infoOptionsActivity extends AppCompatActivity {
 //        setResult(Activity.RESULT_OK, data);
         Intent intent = new Intent(this, ExpInfoActivity.class);
         startActivity(intent);
-        finish();
     }
     public void ShowProject(View view){
 //        EditText expense = (EditText) findViewById(R.id.new_expense);
@@ -60,7 +57,6 @@ public class infoOptionsActivity extends AppCompatActivity {
 //        setResult(Activity.RESULT_OK, data);
         Intent intent = new Intent(this, ProjectInfoActivity.class);
         startActivity(intent);
-        finish();
     }
 
 //    public boolean onOptionsItemSelected(MenuItem item) {

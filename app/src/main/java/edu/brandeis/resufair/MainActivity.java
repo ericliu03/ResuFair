@@ -68,8 +68,21 @@ public class MainActivity extends AppCompatActivity {
             this.storeUserInfo(userEmail);
             server.logIn(userEmail, userPassword, userType);
             if (userType.equals(getString(R.string.user_type_1))) {
-                Intent intent = new Intent(this, infoOptionsActivity.class);
-                startActivity(intent);
+                server.getCandidate(new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Intent intent = new Intent(MainActivity.this, infoOptionsActivity.class);
+                        startActivity(intent);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "Login failed, try again", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
             } else {
                 server.getCompany(new Response.Listener<JSONObject>() {
                     @Override

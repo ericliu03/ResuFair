@@ -37,8 +37,7 @@
         </activity>
         <activity
             android:name=".infoOptionsActivity"
-            android:label="infoOptionsActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:label="infoOptionsActivity">
         </activity>
         <activity android:name=".BasicInfoActivity"
             android:label="BasicInfoActivity">
